@@ -428,6 +428,56 @@
     const canvas = $elements.canvas;
     const context = canvas.getContext("2d");
 
+    function makeMovable(element) {
+        var draggable = element;
+        var initialX, initialY, currentX, currentY;
+
+        function startDragging(e) {
+            if (e.type === 'touchstart') {
+                initialX = e.touches[0].clientX - draggable.offsetLeft;
+                initialY = e.touches[0].clientY - draggable.offsetTop;
+            } else {
+                initialX = e.clientX - draggable.offsetLeft;
+                initialY = e.clientY - draggable.offsetTop;
+            }
+
+            // Solo agregamos preventDefault en eventos de mouse, no en eventos táctiles
+            if (e.type === 'mousedown') {
+                e.preventDefault();
+            }
+
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', stopDragging);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDragging);
+        }
+
+        function drag(e) {
+            if (e.type === 'touchmove') {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+
+            draggable.style.left = currentX + 'px';
+            draggable.style.top = currentY + 'px';
+            draggable.style.right = 'initial';
+            draggable.style.bottom = 'initial';
+        }
+
+        function stopDragging() {
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('touchend', stopDragging);
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDragging);
+        }
+
+        draggable.addEventListener('touchstart', startDragging);
+        draggable.addEventListener('mousedown', startDragging);
+    }
+
     const changeBlob = (blob) => {
         useThis.blob = blob
         $elements.btnDownload.style.opacity = blob == null ? .3 : 1
@@ -755,8 +805,7 @@
     Array.from($element.querySelectorAll('[data-assign-icon]')).forEach(element => element.innerHTML = icons[element.getAttribute('data-assign-icon')])
 
     changeBlob(null)
-
-
+    makeMovable($elements.moveElement);
 
 </script>
 
@@ -764,8 +813,8 @@
     <template>
         <div class="div_Ur32DJUU6NXFiO3">
 
-            <div class="div_vOjQgb9XSrcW3">
-                <button>
+            <div id="moveElement" class="div_vOjQgb9XSrcW3">
+                <button data-move="true">
                     <svg xmlns="http://www.w3.org/2000/svg" id="arrow-circle-down" viewBox="0 0 24 24" width="512"
                         height="512">
                         <path
