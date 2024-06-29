@@ -434,6 +434,7 @@
         var initialX, initialY, currentX, currentY;
 
         function startDragging(e) {
+$element.style.pointerEvents = 'initial'
             if (e.type === 'touchstart') {
                 initialX = e.touches[0].clientX - draggable.offsetLeft;
                 initialY = e.touches[0].clientY - draggable.offsetTop;
@@ -469,7 +470,7 @@
         }
 
         function stopDragging() {
-            document.removeEventListener('touchmove', drag);
+           $element.style.pointerEvents = 'none' document.removeEventListener('touchmove', drag);
             document.removeEventListener('touchend', stopDragging);
             document.removeEventListener('mousemove', drag);
             document.removeEventListener('mouseup', stopDragging);
