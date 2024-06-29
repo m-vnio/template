@@ -564,7 +564,7 @@
             const stream = video.captureStream();
             const options = {
                 mimeType: "video/webm; codecs=vp9",
-                videoBitsPerSecond: 2500000,
+                videoBitsPerSecond: 8000000,
             };
 
             useThis.mediaRecorder = new MediaRecorder(stream, options);
