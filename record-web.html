@@ -403,15 +403,15 @@
         recordedChunks: [],
         blobs: [],
         blob: null,
-        timeout : {
-            recording : null
+        timeout: {
+            recording: null
         },
-        interval : {
-            recording : null
+        interval: {
+            recording: null
         },
-        int : {
-            intervalRecording : 0
-        } 
+        int: {
+            intervalRecording: 0
+        }
     }
 
     // const $element = document.querySelector('.div_Ur32DJUU6NXFiO3')
@@ -484,24 +484,24 @@
         console.log('empezar a grabar');
         console.log('dar play al video');
 
-        if( useThis.interval.recording != null ) {
-            clearInterval( useThis.interval.recording ) 
+        if (useThis.interval.recording != null) {
+            clearInterval(useThis.interval.recording)
         }
 
         useThis.int.intervalRecording = 0
 
         const convert = convertSecondsToTime(useThis.int.intervalRecording)
 
-        const cero =(num)=>{
-            return `0${ num }`.slice(-2) 
+        const cero = (num) => {
+            return `0${num}`.slice(-2)
         }
 
-        $elements.intervalrecording.textContent = [ cero(convert.hours),cero(convert.minutes), cero(convert.seconds) ].join(':')
+        $elements.intervalrecording.textContent = [cero(convert.hours), cero(convert.minutes), cero(convert.seconds)].join(':')
 
-        useThis.interval.recording = setInterval(()=> {
+        useThis.interval.recording = setInterval(() => {
 
             const convert = convertSecondsToTime(++useThis.int.intervalRecording)
-            $elements.intervalrecording.textContent = [cero(convert.hours), cero(convert.minutes), cero(convert.seconds) ].join(':')
+            $elements.intervalrecording.textContent = [cero(convert.hours), cero(convert.minutes), cero(convert.seconds)].join(':')
 
         }, 1000)
 
@@ -548,7 +548,7 @@
 
     $elements.btnStop.addEventListener('click', () => {
 
-        if( useThis.interval.recording != null ) clearInterval( useThis.interval.recording )
+        if (useThis.interval.recording != null) clearInterval(useThis.interval.recording)
 
         $elements.buttonRecordStop.innerHTML = $elements.btnRecord.innerHTML
 
@@ -643,6 +643,13 @@
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
     })
+
+    if (video.readyState >= 1) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        if (!video.paused) draw()
+    }
 
     video.addEventListener("timeupdate", () => {
         if ($elements.durationInput.getAttribute("data-status") == "true") return;
@@ -748,6 +755,7 @@
     Array.from($element.querySelectorAll('[data-assign-icon]')).forEach(element => element.innerHTML = icons[element.getAttribute('data-assign-icon')])
 
     changeBlob(null)
+
 
 
 </script>
